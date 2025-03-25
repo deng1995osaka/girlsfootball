@@ -249,7 +249,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
           <PlayButton 
             aria-label="Play" 
             onClick={handlePlay}
-          >▶</PlayButton>
+          />
           <ControlButton 
             aria-label="Pause" 
             onClick={handlePause}

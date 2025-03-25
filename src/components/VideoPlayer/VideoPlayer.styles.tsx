@@ -335,9 +335,26 @@ export const ControlButton = styled.button<ButtonHTMLAttributes<HTMLButtonElemen
 `;
 
 export const PlayButton = styled(ControlButton)`
-  padding: 0.125rem 0.5rem 0.375rem 0.5rem;
+  position: relative;
+  padding: 0.25rem 0.5rem;
   font-size: 1rem;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+
+  &::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0.5rem 0 0.5rem 0.75rem;
+    border-color: transparent transparent transparent var(--text-primary);
+    display: block;
+    position: relative;
+    top: 0;
+  }
 `;
 
 export const Progress = styled.div`
