@@ -349,7 +349,7 @@ export const PlayButton = styled(ControlButton)`
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0.5rem 0 0.5rem 0.75rem;
+    border-width: 0.375rem 0 0.375rem 0.5rem;
     border-color: transparent transparent transparent var(--text-primary);
     display: block;
     position: relative;
