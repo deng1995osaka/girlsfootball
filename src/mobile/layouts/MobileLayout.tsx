@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, Suspense } from 'react';
 import styled from 'styled-components';
+import Loading from '../../components/UI/Loading';
+import { useGesture } from '../../hooks/useGesture';
+import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
+import { usePreloadComponent } from '../../hooks/usePreloadComponent';
+import {
+  LazyMobileVideo,
+  LazyMobileFeatures,
+  LazyMobilePromo,
+  LazyMobileDownload
+} from './LazyMobileComponents';
 import MobileVideo from '../pages/MobileVideo';
 import MobileFeatures from '../pages/MobileFeatures';
 import MobilePromo from '../pages/MobilePromo';
 import MobileDownload from '../pages/MobileDownload';
-import { useGesture } from '../../hooks/useGesture';
 
 type TabKey = 'video' | 'promo' | 'features' | 'download';
 
@@ -211,6 +222,12 @@ const MobileLayout: React.FC = () => {
 
   const tabs: TabKey[] = ['video', 'promo', 'features', 'download'];
 
+  // 预加载函数
+  const preloadVideo = usePreloadComponent(() => import('../pages/MobileVideo'));
+  const preloadPromo = usePreloadComponent(() => import('../pages/MobilePromo'));
+  const preloadFeatures = usePreloadComponent(() => import('../pages/MobileFeatures'));
+  const preloadDownload = usePreloadComponent(() => import('../pages/MobileDownload'));
+
   const handleSwipeLeft = () => {
     setActiveTab(prev => {
       const currentIndex = tabs.indexOf(prev);
@@ -234,18 +251,61 @@ const MobileLayout: React.FC = () => {
 
   const handleTabClick = (key: TabKey) => {
     setActiveTab(key);
+    // 预加载下一个可能的组件
+    const currentIndex = tabs.indexOf(key);
+    if (currentIndex < tabs.length - 1) {
+      const nextTab = tabs[currentIndex + 1];
+      switch (nextTab) {
+        case 'video':
+          preloadVideo();
+          break;
+        case 'promo':
+          preloadPromo();
+          break;
+        case 'features':
+          preloadFeatures();
+          break;
+        case 'download':
+          preloadDownload();
+          break;
+      }
+    }
   };
 
   const renderContent = () => {
     switch (activeTab) {
       case 'video':
-        return <MobileVideo />;
+        return (
+          <ErrorBoundary>
+            <Suspense fallback={<Loading />}>
+              <LazyMobileVideo />
+            </Suspense>
+          </ErrorBoundary>
+        );
       case 'promo':
-        return <MobilePromo />;
+        return (
+          <ErrorBoundary>
+            <Suspense fallback={<Loading />}>
+              <LazyMobilePromo />
+            </Suspense>
+          </ErrorBoundary>
+        );
       case 'features':
-        return <MobileFeatures />;
+        return (
+          <ErrorBoundary>
+            <Suspense fallback={<Loading />}>
+              <LazyMobileFeatures />
+            </Suspense>
+          </ErrorBoundary>
+        );
       case 'download':
-        return <MobileDownload />;
+        return (
+          <ErrorBoundary>
+            <Suspense fallback={<Loading />}>
+              <LazyMobileDownload />
+            </Suspense>
+          </ErrorBoundary>
+        );
       default:
         return null;
     }

@@ -1,4 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const scanline = keyframes`
+  0% {
+    transform: translateY(0) translateZ(0);
+  }
+  100% {
+    transform: translateY(100%) translateZ(0);
+  }
+`;
 
 export const Container = styled.div`
   display: flex;
@@ -27,6 +36,9 @@ export const VideoWrapper = styled.div`
   border: 0.125rem solid var(--line);
   position: relative;
   overflow: hidden;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 
   /* 复古纹理效果 */
   &::before {
@@ -46,6 +58,8 @@ export const VideoWrapper = styled.div`
       );
     pointer-events: none;
     z-index: 1;
+    will-change: transform;
+    transform: translateZ(0);
   }
 
   /* 覆盖 VideoPlayer 样式 */
@@ -77,7 +91,9 @@ export const VideoWrapper = styled.div`
       background-size: 100% 0.25rem;
       z-index: 2;
       pointer-events: none;
-      animation: scanline 10s linear infinite;
+      will-change: transform;
+      animation: ${scanline} 10s linear infinite;
+      transform: translateZ(0);
     }
 
     &::after {

@@ -144,7 +144,7 @@ const FEATURES_DATA = [
       '创建你的球队主页',
       '设计像素风队服',
     ],
-    preview: '/images/TEAM.png',
+    preview: '/images/TEAM.webp',
   },
   {
     id: 'moments',
@@ -155,7 +155,7 @@ const FEATURES_DATA = [
       '分享日常训练',
       '发布你的球场故事'
     ],
-    preview: '/images/MOMENTS.png',
+    preview: '/images/MOMENTS.webp',
   },
   {
     id: 'player',
@@ -166,7 +166,7 @@ const FEATURES_DATA = [
       '选择场上位置',
       '查看你的小报和球队'
     ],
-    preview: '/images/PLAYER.png',
+    preview: '/images/PLAYER.webp',
   }
 ];
 

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { ButtonHTMLAttributes } from 'react';
 import React, { forwardRef } from 'react';
 
@@ -194,6 +194,15 @@ export const DisplaySection = styled.div`
   }
 `;
 
+const bounce = keyframes`
+  0%, 100% { 
+    transform: translateY(0) translateZ(0);
+  }
+  50% { 
+    transform: translateY(-10px) translateZ(0);
+  }
+`;
+
 export const DisplayText = styled.div<{ 
   variant?: 'time' | 'info';
   animationState?: 'play' | 'pause' | 'stop' | 'forward' | 'backward';
@@ -213,6 +222,9 @@ export const DisplayText = styled.div<{
   overflow: hidden;
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: none;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  transition: opacity 0.3s ease;
   
   /* 确保文字在点阵上方 */
   > span {
@@ -316,29 +328,28 @@ export const PlayButton = styled(ControlButton)`
 `;
 
 export const Progress = styled.div`
-  flex-grow: 1;
-  margin-left: 0.25rem;
-  height: 0.625rem;
-  background: #000;
-  border: 0.0625rem solid var(--line);
-  border-radius: 0.125rem;
   position: relative;
+  width: 100%;
+  height: 8px;
+  background: #000;
+  border-radius: 4px;
   cursor: pointer;
+  will-change: transform;
+  transform: translateZ(0);
 
   .progress-handle {
-    width: 0.875rem;
-    height: 1rem;
-    background: var(--bg-white);
-    border: 0.125rem solid var(--line);
-    border-radius: 0.125rem;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    width: 14px;
+    height: 14px;
+    background: var(--primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) translateZ(0);
+    will-change: transform;
+    transition: transform 0.1s ease;
 
     &:hover {
-      background: var(--primary);
+      transform: translate(-50%, -50%) scale(1.2) translateZ(0);
     }
   }
 ` as any;

@@ -41,7 +41,7 @@ const BallWrapper = styled.div`
 const PixelBall = styled.div`
   width: 4rem;
   height: 4rem;
-  background-image: url('/icons/ball.png');
+  background-image: url('/icons/ball.webp');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

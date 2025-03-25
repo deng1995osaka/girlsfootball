@@ -96,13 +96,15 @@ export const Preview = styled.div`
   max-width: 15.625rem;
   display: flex;
   justify-content: center;
+  will-change: transform;
+  transform: translateZ(0);
 
   img {
     width: 100%;
     object-fit: contain;
-    image-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: transform 0.3s ease;
   }
 `;
 
@@ -132,11 +134,11 @@ export const EndLine = styled(StyledEndLine)``;
 const slideIn = keyframes`
   from {
     opacity: 0;
-    transform: translateY(-1.25rem);
+    transform: translateY(-20px) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
 `;
 
@@ -147,6 +149,10 @@ export const AnimatedFeatureBox = styled(FeatureBox)<{
 }>`
   position: relative;
   opacity: 0;
+  will-change: transform, opacity;
+  transform: translateZ(0);
   animation: ${props => props.isVisible ? slideIn : 'none'} 0.5s ease-out forwards;
   animation-delay: ${props => props.delay}ms;
+  backface-visibility: hidden;
+  perspective: 1000px;
 `;

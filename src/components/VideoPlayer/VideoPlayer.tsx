@@ -12,6 +12,7 @@ import {
   Progress,
   GlobalStyle
 } from './VideoPlayer.styles';
+import OptimizedImage from '../UI/OptimizedImage';
 
 interface VideoPlayerProps {
   title: string;
@@ -200,14 +201,25 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
       <GlobalStyle />
       <audio ref={audioRef} src="/music.m4a" />
       <DisplayWindow>
-        <img 
-          src={isPlaying ? "/video-cover.gif" : "/video-cover.png"} 
-          alt="Video Cover" 
-          style={{
-            transform: `scale(${1 + (progress / 100)})`,
-            transition: 'transform 0.3s ease'
-          }}
-        />
+        {isPlaying ? (
+          <img 
+            src="/video-cover.gif" 
+            alt="Video Cover" 
+            style={{
+              transform: `scale(${1 + (progress / 100)})`,
+              transition: 'transform 0.3s ease'
+            }}
+          />
+        ) : (
+          <OptimizedImage 
+            src="/video-cover.webp" 
+            alt="Video Cover" 
+            style={{
+              transform: `scale(${1 + (progress / 100)})`,
+              transition: 'transform 0.3s ease'
+            }}
+          />
+        )}
       </DisplayWindow>
       
       <ControlPanel>

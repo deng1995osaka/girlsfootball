@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, Suspense } from 'react';
 import styled from 'styled-components';
 import BaseWindow from '../Windows/BaseWindow';
-import VideoPlayer from '../VideoPlayer/VideoPlayer';
-import FeaturesWindow from '../Features/FeaturesWindow';
-import PromoWindow from '../Promo/PromoWindow';
-import DownloadWindow from '../Download/DownloadWindow';
+import Loading from '../UI/Loading';
+import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary';
+import { usePreloadComponent } from '../../hooks/usePreloadComponent';
+import {
+  LazyVideoPlayer,
+  LazyPromoWindow,
+  LazyFeaturesWindow,
+  LazyDownloadWindow
+} from './LazyComponents';
 
 type WindowKey = 'video' | 'promo' | 'features' | 'download';
 
@@ -31,6 +38,12 @@ const Desktop = ({ openWindows, onCloseWindow }: DesktopProps) => {
     return index === -1 ? 1 : index + 1;
   };
 
+  // 预加载函数
+  const preloadVideo = usePreloadComponent(() => import('../VideoPlayer/VideoPlayer'));
+  const preloadPromo = usePreloadComponent(() => import('../Promo/PromoWindow'));
+  const preloadFeatures = usePreloadComponent(() => import('../Features/FeaturesWindow'));
+  const preloadDownload = usePreloadComponent(() => import('../Download/DownloadWindow'));
+
   const renderWindow = (windowId: string, index: number) => {
     const offsetValue = index * 1.25; // 基础偏移值（rem）
     
@@ -42,7 +55,7 @@ const Desktop = ({ openWindows, onCloseWindow }: DesktopProps) => {
             isOpen={true}
             onClose={() => onCloseWindow(windowId as WindowKey)}
             defaultPosition={{ 
-              x: (9 + offsetValue) * 16, // 转换为像素
+              x: (9 + offsetValue) * 16,
               y: (3.125 + offsetValue) * 16 
             }}
             onFocus={() => handleWindowFocus(windowId)}
@@ -50,7 +63,11 @@ const Desktop = ({ openWindows, onCloseWindow }: DesktopProps) => {
             variant="video"
             width={300}
           >
-            <VideoPlayer title="女孩踢球" />
+            <ErrorBoundary>
+              <Suspense fallback={<Loading />}>
+                <LazyVideoPlayer title="女孩踢球" />
+              </Suspense>
+            </ErrorBoundary>
           </BaseWindow>
         );
       case 'promo':
@@ -67,7 +84,11 @@ const Desktop = ({ openWindows, onCloseWindow }: DesktopProps) => {
             zIndex={getWindowZIndex(windowId)}
             width={378}
           >
-            <PromoWindow />
+            <ErrorBoundary>
+              <Suspense fallback={<Loading />}>
+                <LazyPromoWindow />
+              </Suspense>
+            </ErrorBoundary>
           </BaseWindow>
         );
       case 'features':
@@ -84,7 +105,11 @@ const Desktop = ({ openWindows, onCloseWindow }: DesktopProps) => {
             zIndex={getWindowZIndex(windowId)}
             width={600}
           >
-            <FeaturesWindow />
+            <ErrorBoundary>
+              <Suspense fallback={<Loading />}>
+                <LazyFeaturesWindow />
+              </Suspense>
+            </ErrorBoundary>
           </BaseWindow>
         );
       case 'download':
@@ -101,7 +126,11 @@ const Desktop = ({ openWindows, onCloseWindow }: DesktopProps) => {
             zIndex={getWindowZIndex(windowId)}
             width={300}
           >
-            <DownloadWindow />
+            <ErrorBoundary>
+              <Suspense fallback={<Loading />}>
+                <LazyDownloadWindow />
+              </Suspense>
+            </ErrorBoundary>
           </BaseWindow>
         );
       default:

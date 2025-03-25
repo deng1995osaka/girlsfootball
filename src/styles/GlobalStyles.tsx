@@ -3,17 +3,29 @@ import { createGlobalStyle } from 'styled-components';
 export const GlobalStyles = createGlobalStyle`
   @font-face {
     font-family: 'PixelFont';
-    src: url('/fonts/pixel-font.ttf') format('truetype');
+    src: local('PixelFont'),
+         url('/fonts/pixel-font.ttf') format('truetype');
     font-display: swap;
+    font-weight: normal;
+    font-style: normal;
   }
 
   @font-face {
     font-family: 'EDunDot';
-    src: url('/fonts/edundot.ttf') format('truetype');
+    src: local('EDunDot'),
+         url('/fonts/edundot.ttf') format('truetype');
     font-display: swap;
+    font-weight: normal;
+    font-style: normal;
   }
 
   :root {
+    /* 字体系统 */
+    --font-pixel: 'PixelFont', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-edun: 'EDunDot', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-retro: 'Press Start 2P', monospace;
+    --font-mono: 'PixelFont', monospace, -apple-system, BlinkMacSystemFont;
+    
     /* 基准字体大小 */
     --font-size-base: 16px;
     
@@ -45,7 +57,7 @@ export const GlobalStyles = createGlobalStyle`
     --content-width-md: 768px;
     --content-width-lg: 1024px;
 
-    /* 原有的颜色变量保持不变 */
+    /* 颜色变量 */
     --primary: #E67E22;
     --text-primary: #333333;
     --text-secondary: #999999;
@@ -57,12 +69,6 @@ export const GlobalStyles = createGlobalStyle`
     --window-border: #333333;
     --title-color: #333333;
     --gradient-background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-
-    /* 字体变量 */
-    --font-pixel: 'PixelFont', monospace;
-    --font-edun: 'EDunDot', monospace;
-    --font-retro: 'Press Start 2P', cursive;
-    --font-mono: 'PixelFont', monospace;
   }
 
   * {
@@ -81,6 +87,9 @@ export const GlobalStyles = createGlobalStyle`
     font-family: var(--font-pixel);
     font-size: var(--font-size-base);
     line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* 全局滚动条样式 */

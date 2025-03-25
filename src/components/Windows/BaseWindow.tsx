@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback, memo, useMemo } from 'react';
 import styled from 'styled-components';
 import { CloseButton } from '../UI/StyledButton';
 
@@ -50,11 +50,11 @@ const WindowContainer = styled.div<WindowContainerProps>`
   box-shadow: 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.2);
   display: grid;
   grid-template-columns: 1.875rem 1fr;
-  animation: windowAppear 0.2s ease-out;
-  overflow: hidden;
   will-change: transform;
-  transform-origin: 0 0;
-
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  
   > *:not(${SideBar}) {
     width: 100%;
     overflow-x: hidden;
@@ -79,11 +79,14 @@ const WindowContainer = styled.div<WindowContainerProps>`
   @keyframes windowAppear {
     from {
       opacity: 0;
+      transform: scale(0.95) translateZ(0);
     }
     to {
       opacity: 1;
+      transform: scale(1) translateZ(0);
     }
   }
+  animation: windowAppear 0.2s ease-out;
 `;
 
 interface WindowProps {
@@ -100,7 +103,7 @@ interface WindowProps {
 const MIN_LEFT = 7.375; // 导航栏宽度(7.5rem)减去窗口边框宽度(0.125rem)
 const MIN_TOP = 0;
 
-const BaseWindow: React.FC<WindowProps> = ({
+const BaseWindow: React.FC<WindowProps> = memo(({
   isOpen,
   onClose,
   children,
@@ -112,66 +115,127 @@ const BaseWindow: React.FC<WindowProps> = ({
 }) => {
   const windowRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(defaultPosition);
+  const animationFrameRef = useRef<number>();
+  const resizeTimeoutRef = useRef<NodeJS.Timeout>();
 
-  useEffect(() => {
-    if (!windowRef.current) return;
-    
-    // 设置初始位置
-    const el = windowRef.current;
-    el.style.transform = `translate(${defaultPosition.x}px, ${defaultPosition.y}px)`;
-    positionRef.current = defaultPosition;
+  // 使用 useCallback 缓存事件处理函数
+  const handleWindowClick = useCallback(() => {
+    onFocus?.();
+  }, [onFocus]);
+
+  const handleMouseMove = useCallback((
+    e: MouseEvent,
+    el: HTMLDivElement,
+    mouseStartX: number,
+    mouseStartY: number,
+    startX: number,
+    startY: number
+  ) => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+
+    animationFrameRef.current = requestAnimationFrame(() => {
+      const deltaX = e.clientX - mouseStartX;
+      const deltaY = e.clientY - mouseStartY;
+      const newX = startX + deltaX;
+      const newY = startY + deltaY;
+      
+      const windowWidth = el.offsetWidth;
+      const windowHeight = el.offsetHeight;
+      const maxX = window.innerWidth - windowWidth;
+      const maxY = window.innerHeight - windowHeight;
+      
+      const boundedX = Math.min(Math.max(newX, MIN_LEFT * 16), maxX);
+      const boundedY = Math.min(Math.max(newY, MIN_TOP * 16), maxY);
+      
+      positionRef.current = { x: boundedX, y: boundedY };
+      el.style.transform = `translate3d(${boundedX}px, ${boundedY}px, 0)`;
+    });
   }, []);
 
-  if (!isOpen) return null;
-
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
     const el = windowRef.current;
     if (!el) return;
 
-    // 窗口被点击时触发onFocus
     onFocus?.();
 
-    // 记录鼠标按下时的位置
     const mouseStartX = e.clientX;
     const mouseStartY = e.clientY;
     const startX = positionRef.current.x;
     const startY = positionRef.current.y;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      // 计算鼠标移动的距离
-      const deltaX = e.clientX - mouseStartX;
-      const deltaY = e.clientY - mouseStartY;
-
-      // 计算新位置
-      const newX = startX + deltaX;
-      const newY = startY + deltaY;
-
-      // 获取窗口尺寸用于边界检查
-      const windowWidth = el.offsetWidth;
-      const windowHeight = el.offsetHeight;
-      const maxX = window.innerWidth - windowWidth;
-      const maxY = window.innerHeight - windowHeight;
-
-      // 应用边界限制
-      const boundedX = Math.min(Math.max(newX, MIN_LEFT * 16), maxX);
-      const boundedY = Math.min(Math.max(newY, MIN_TOP * 16), maxY);
-
-      positionRef.current = { x: boundedX, y: boundedY };
-      el.style.transform = `translate(${boundedX}px, ${boundedY}px)`;
+    const handleMouseMoveEvent = (e: MouseEvent) => {
+      handleMouseMove(e, el, mouseStartX, mouseStartY, startX, startY);
     };
 
     const handleMouseUp = () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      document.removeEventListener('mousemove', handleMouseMoveEvent);
       document.removeEventListener('mouseup', handleMouseUp);
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousemove', handleMouseMoveEvent);
     document.addEventListener('mouseup', handleMouseUp);
-  };
+  }, [handleMouseMove, onFocus]);
 
-  const handleWindowClick = () => {
-    onFocus?.();
-  };
+  // 优化 resize 事件处理
+  useEffect(() => {
+    const handleResize = () => {
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+
+      resizeTimeoutRef.current = setTimeout(() => {
+        if (!windowRef.current) return;
+        
+        const el = windowRef.current;
+        const windowWidth = el.offsetWidth;
+        const windowHeight = el.offsetHeight;
+        const maxX = window.innerWidth - windowWidth;
+        const maxY = window.innerHeight - windowHeight;
+        
+        const boundedX = Math.min(Math.max(positionRef.current.x, MIN_LEFT * 16), maxX);
+        const boundedY = Math.min(Math.max(positionRef.current.y, MIN_TOP * 16), maxY);
+        
+        positionRef.current = { x: boundedX, y: boundedY };
+        el.style.transform = `translate3d(${boundedX}px, ${boundedY}px, 0)`;
+      }, 100); // 100ms 防抖
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!windowRef.current) return;
+    
+    const el = windowRef.current;
+    el.style.transform = `translate3d(${defaultPosition.x}px, ${defaultPosition.y}px, 0)`;
+    positionRef.current = defaultPosition;
+  }, [defaultPosition]);
+
+  // 使用 useMemo 缓存窗口尺寸计算
+  const windowDimensions = useMemo(() => {
+    if (!windowRef.current) return { width: 0, height: 0 };
+    const el = windowRef.current;
+    return {
+      width: el.offsetWidth,
+      height: el.offsetHeight
+    };
+  }, [windowRef.current]);
+
+  if (!isOpen) return null;
 
   return (
     <WindowContainer
@@ -186,6 +250,9 @@ const BaseWindow: React.FC<WindowProps> = ({
       {children}
     </WindowContainer>
   );
-};
+});
+
+// 添加组件显示名称，便于调试
+BaseWindow.displayName = 'BaseWindow';
 
 export default BaseWindow; 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import AdaptiveTitle from '../../components/UI/AdaptiveTitle';
 import Typewriter from '../../components/UI/Typewriter';
+import OptimizedImage from '../../components/UI/OptimizedImage';
 
 const Container = styled.div`
   padding: var(--spacing-sm);
@@ -183,7 +184,7 @@ const MobilePromo: React.FC = () => {
       </StoryBox>
 
       <Preview>
-        <img 
+        <OptimizedImage 
           src="/images/Phone.png" 
           alt="诺基亚短信界面" 
         />

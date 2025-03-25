@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AdaptiveTitle from '../UI/AdaptiveTitle';
 import styled from 'styled-components';
 import Typewriter from '../UI/Typewriter';
+import OptimizedImage from '../UI/OptimizedImage';
 import {
   Container,
   StoryBox,
@@ -92,7 +93,7 @@ const PromoWindow: React.FC = () => {
       </StoryBox>
 
       <Preview>
-        <img 
+        <OptimizedImage 
           src="/images/Phone.png" 
           alt="诺基亚短信界面" 
         />

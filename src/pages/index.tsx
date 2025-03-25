@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Desktop from '../components/Layout/Desktop';
-import Dock from '../components/Layout/Dock';
 import dynamic from 'next/dynamic';
+import Loading from '../components/UI/Loading';
+
+// 动态导入组件
+const Desktop = dynamic(() => import('../components/Layout/Desktop'), {
+  ssr: false,
+  loading: () => <Loading />
+});
+
+const Dock = dynamic(() => import('../components/Layout/Dock'), {
+  ssr: true,
+  loading: () => <Loading />
+});
 
 const MobileLayout = dynamic(
   () => import('../mobile/layouts/MobileLayout'),
-  { ssr: false }
+  { 
+    ssr: false,
+    loading: () => <Loading />
+  }
 );
 
 type WindowKey = 'video' | 'promo' | 'features' | 'download';
