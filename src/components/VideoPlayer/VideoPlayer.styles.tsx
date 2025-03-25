@@ -330,26 +330,64 @@ export const PlayButton = styled(ControlButton)`
 export const Progress = styled.div`
   position: relative;
   width: 100%;
-  height: 8px;
-  background: #000;
-  border-radius: 4px;
+  height: 0.75rem;
+  background: #1a1a1a;
+  border: 0.125rem solid var(--line);
+  border-radius: 0.25rem;
   cursor: pointer;
   will-change: transform;
   transform: translateZ(0);
+  box-shadow: inset 0 0.125rem 0.25rem rgba(0, 0, 0, 0.5);
+  margin-left: 0.5rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.03) 0px,
+        rgba(255, 255, 255, 0.03) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+    pointer-events: none;
+    border-radius: 0.125rem;
+  }
 
   .progress-handle {
     position: absolute;
     top: 50%;
-    width: 14px;
-    height: 14px;
-    background: var(--primary);
-    border-radius: 50%;
+    width: 0.875rem;
+    height: 1.25rem;
+    background: #e0e0e0;
+    border: 0.125rem solid var(--line);
     transform: translate(-50%, -50%) translateZ(0);
     will-change: transform;
     transition: transform 0.1s ease;
+    box-shadow: 
+      inset -1px -1px 0 0 #000,
+      inset 1px 1px 0 0 #fff,
+      inset -2px -2px 0 0 #555,
+      inset 2px 2px 0 0 #e0e0e0,
+      0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
+    border-radius: 0.25rem;
 
     &:hover {
-      transform: translate(-50%, -50%) scale(1.2) translateZ(0);
+      transform: translate(-50%, -50%) scale(1.1) translateZ(0);
+    }
+
+    &:active {
+      transform: translate(-50%, -50%) scale(0.95) translateZ(0);
+      box-shadow: 
+        inset 1px 1px 0 0 #000,
+        inset -1px -1px 0 0 #fff,
+        inset 2px 2px 0 0 #555,
+        inset -2px -2px 0 0 #e0e0e0;
     }
   }
 ` as any;

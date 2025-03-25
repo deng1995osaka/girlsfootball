@@ -50,10 +50,11 @@ const WindowContainer = styled.div<WindowContainerProps>`
   box-shadow: 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.2);
   display: grid;
   grid-template-columns: 1.875rem 1fr;
-  will-change: transform;
-  transform: translateZ(0);
+  will-change: transform, opacity;
   backface-visibility: hidden;
   perspective: 1000px;
+  opacity: 0;
+  overflow: hidden;
   
   > *:not(${SideBar}) {
     width: 100%;
@@ -79,14 +80,14 @@ const WindowContainer = styled.div<WindowContainerProps>`
   @keyframes windowAppear {
     from {
       opacity: 0;
-      transform: scale(0.95) translateZ(0);
+      scale: 0.95;
     }
     to {
       opacity: 1;
-      transform: scale(1) translateZ(0);
+      scale: 1;
     }
   }
-  animation: windowAppear 0.2s ease-out;
+  animation: windowAppear 0.2s ease-out forwards;
 `;
 
 interface WindowProps {
@@ -117,6 +118,7 @@ const BaseWindow: React.FC<WindowProps> = memo(({
   const positionRef = useRef(defaultPosition);
   const animationFrameRef = useRef<number>();
   const resizeTimeoutRef = useRef<NodeJS.Timeout>();
+  const mountedRef = useRef(false);
 
   // 使用 useCallback 缓存事件处理函数
   const handleWindowClick = useCallback(() => {
@@ -175,6 +177,16 @@ const BaseWindow: React.FC<WindowProps> = memo(({
       }
       document.removeEventListener('mousemove', handleMouseMoveEvent);
       document.removeEventListener('mouseup', handleMouseUp);
+      
+      // 保存最终位置
+      if (el) {
+        const transform = window.getComputedStyle(el).transform;
+        const matrix = new DOMMatrix(transform);
+        positionRef.current = {
+          x: matrix.m41,
+          y: matrix.m42
+        };
+      }
     };
 
     document.addEventListener('mousemove', handleMouseMoveEvent);
@@ -217,12 +229,14 @@ const BaseWindow: React.FC<WindowProps> = memo(({
     };
   }, []);
 
+  // 只在首次挂载时设置初始位置
   useEffect(() => {
-    if (!windowRef.current) return;
+    if (!windowRef.current || mountedRef.current) return;
     
     const el = windowRef.current;
     el.style.transform = `translate3d(${defaultPosition.x}px, ${defaultPosition.y}px, 0)`;
     positionRef.current = defaultPosition;
+    mountedRef.current = true;
   }, [defaultPosition]);
 
   // 使用 useMemo 缓存窗口尺寸计算
