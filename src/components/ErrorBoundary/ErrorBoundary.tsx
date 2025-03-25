@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo } from 'react';
+import React, { Component, ErrorInfo, ButtonHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -10,31 +10,46 @@ interface State {
   error: Error | null;
 }
 
-const ErrorContainer = styled.div`
-  padding: 1rem;
-  background: var(--bg-white);
-  border-radius: 0.5rem;
+interface StyledProps {
+  children?: React.ReactNode;
+}
+
+const ErrorContainer = styled.div<StyledProps>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
   text-align: center;
+  height: 100%;
+  min-height: 12.5rem;
+`;
+
+const ErrorMessage = styled.div<StyledProps>`
+  color: var(--text-primary);
   font-family: var(--font-pixel);
+  font-size: 1rem;
+  margin-bottom: var(--spacing-md);
 `;
 
-const ErrorMessage = styled.p`
-  color: var(--primary);
-  margin: 0.5rem 0;
-`;
-
-const RetryButton = styled.button`
+const RetryButton = styled.button.attrs({ type: 'button' })<ButtonHTMLAttributes<HTMLButtonElement>>`
   background: var(--primary);
-  color: var(--bg-white);
+  color: var(--text-primary);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
-  cursor: pointer;
   font-family: var(--font-pixel);
-  margin-top: 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 
   &:hover {
     opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
 
@@ -55,8 +70,8 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('组件错误:', error);
-    console.error('错误详情:', errorInfo);
+    console.error('Error:', error);
+    console.error('Error Info:', errorInfo);
   }
 
   handleRetry = () => {
