@@ -18,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         
         {/* 预加载关键图片 */}
         <link rel="preload" href="/images/video-cover.webp" as="image" type="image/webp" />
+        <link rel="preload" href="/video-cover.gif" as="image" type="image/gif" />
       </Head>
       <GlobalStyles />
       <Component {...pageProps} />

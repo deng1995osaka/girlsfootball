@@ -4,7 +4,8 @@ import {
   DisplayWindow,
   ControlPanel,
   DisplaySection,
-  DisplayText,
+  TimeDisplay,
+  InfoDisplay,
   Visualizer,
   Controls,
   ControlButton,
@@ -26,6 +27,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const gifRef = useRef<HTMLImageElement>(null);
+
+  // 预加载 GIF
+  useEffect(() => {
+    const preloadGif = new Image();
+    preloadGif.src = '/video-cover.gif';
+  }, []);
 
   const updateProgress = (clientX: number, element: HTMLDivElement) => {
     const rect = element.getBoundingClientRect();
@@ -203,8 +211,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
       <DisplayWindow>
         {isPlaying ? (
           <img 
+            ref={gifRef}
             src="/video-cover.gif" 
-            alt="Video Cover" 
+            alt="Video Cover"
+            loading="eager"
             style={{
               transform: `scale(${1 + (progress / 100)})`,
               transition: 'transform 0.3s ease'
@@ -224,10 +234,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
       
       <ControlPanel>
         <DisplaySection>
-          <DisplayText variant="time">{displayTime}</DisplayText>
-          <DisplayText variant="info" animationState={animationState}>
+          <TimeDisplay>{displayTime}</TimeDisplay>
+          <InfoDisplay animationState={animationState}>
             <span>{statusText}</span>
-          </DisplayText>
+          </InfoDisplay>
           <Visualizer />
         </DisplaySection>
         
@@ -235,7 +245,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
           <ControlButton 
             aria-label="Previous" 
             onClick={handlePrevious}
-          >⏮</ControlButton>
+          >|◀◀</ControlButton>
           <PlayButton 
             aria-label="Play" 
             onClick={handlePlay}
@@ -243,15 +253,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
           <ControlButton 
             aria-label="Pause" 
             onClick={handlePause}
-          >⏸</ControlButton>
+          >||</ControlButton>
           <ControlButton 
             aria-label="Stop" 
             onClick={handleStop}
-          >⏹</ControlButton>
+          >■</ControlButton>
           <ControlButton 
             aria-label="Next"
             onClick={handleNext}
-          >⏭</ControlButton>
+          >▶▶|</ControlButton>
           
           <Progress
             className="progress-bar"

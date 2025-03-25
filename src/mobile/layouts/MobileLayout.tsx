@@ -29,9 +29,9 @@ interface ItemLabelProps {
 }
 
 const WINDOW_LABELS: Record<TabKey, { en: string; zh: { prefix?: string; content: string; suffix?: string } }> = {
-  video: { en: 'INTRO', zh: { content: '开球!' } },
   promo: { en: 'ABOUT', zh: { content: '我的故事' } },
   features: { en: 'FEATURES', zh: { content: '功能介绍' } },
+  video: { en: 'INTRO', zh: { content: '开球!' } },
   download: { en: 'DOWNLOAD', zh: { content: '下载' } }
 };
 
@@ -218,9 +218,9 @@ const NavButton = styled.button.attrs({ type: 'button' })<NavButtonProps>`
 `;
 
 const MobileLayout: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabKey>('video');
+  const [activeTab, setActiveTab] = useState<TabKey>('promo');
 
-  const tabs: TabKey[] = ['video', 'promo', 'features', 'download'];
+  const tabs: TabKey[] = ['promo', 'features', 'video', 'download'];
 
   // 预加载函数
   const preloadVideo = usePreloadComponent(() => import('../pages/MobileVideo'));

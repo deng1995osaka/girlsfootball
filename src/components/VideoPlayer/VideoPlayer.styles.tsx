@@ -207,11 +207,11 @@ export const DisplayText = styled.div<{
   variant?: 'time' | 'info';
   animationState?: 'play' | 'pause' | 'stop' | 'forward' | 'backward';
 } & React.HTMLAttributes<HTMLDivElement>>`
-  color: #32CD32;
-  font-family: ${props => props.variant === 'time' ? 'var(--font-edun)' : 'var(--font-edun)'};
+  font-family: ${props => props.variant === 'info' ? 'var(--font-pixel)' : 'var(--font-retro)'};
+  color: var(--primary);
   font-size: ${props => props.variant === 'time' ? '1.25rem' : '1rem'};
-  text-shadow: 0 0 0.5rem rgba(50, 205, 50, 0.8),
-               0 0 0.75rem rgba(50, 205, 50, 0.4);
+  text-shadow: 0 0 0.5rem rgba(230, 126, 34, 0.8),
+               0 0 0.75rem rgba(230, 126, 34, 0.4);
   letter-spacing: ${props => props.variant === 'time' ? '0.1875rem' : '0.125rem'};
   font-weight: ${props => props.variant === 'time' ? 'bold' : 'normal'};
   margin-top: ${props => props.variant === 'info' ? '0.25rem' : '0'};
@@ -220,8 +220,8 @@ export const DisplayText = styled.div<{
   width: 100%;
   height: ${props => props.variant === 'time' ? '1.875rem' : '1.5rem'};
   overflow: hidden;
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   will-change: transform, opacity;
   transform: translateZ(0);
   transition: opacity 0.3s ease;
@@ -391,3 +391,83 @@ export const Progress = styled.div`
     }
   }
 ` as any;
+
+export const TimeDisplay = styled.div`
+  font-family: var(--font-edun);
+  color: #32CD32;
+  font-size: 1.25rem;
+  text-shadow: 0 0 0.5rem rgba(50, 205, 50, 0.8),
+               0 0 0.75rem rgba(50, 205, 50, 0.4);
+  letter-spacing: 0.1875rem;
+  font-weight: bold;
+  line-height: 1.4;
+  height: 1.875rem;
+  overflow: hidden;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: none;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+`;
+
+export const InfoDisplay = styled.div<{
+  animationState?: 'play' | 'pause' | 'stop' | 'forward' | 'backward';
+  children?: React.ReactNode;
+}>`
+  font-family: var(--font-pixel);
+  color: #32CD32;
+  font-size: 1rem;
+  text-shadow: 0 0 0.5rem rgba(50, 205, 50, 0.8),
+               0 0 0.75rem rgba(50, 205, 50, 0.4);
+  letter-spacing: 0.125rem;
+  margin-top: 0.25rem;
+  line-height: 1.4;
+  height: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: none;
+  
+  > span {
+    position: relative;
+    z-index: 2;
+    position: absolute;
+    white-space: nowrap;
+    display: inline-block;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    
+    animation: ${props => {
+      switch (props.animationState) {
+        case 'play':
+          return 'scrollText 8s linear infinite';
+        case 'forward':
+          return 'scrollText 4s linear infinite';
+        case 'backward':
+          return 'scrollTextReverse 4s linear infinite';
+        case 'pause':
+        case 'stop':
+        default:
+          return 'none';
+      }
+    }};
+  }
+
+  @keyframes scrollText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes scrollTextReverse {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+`;
