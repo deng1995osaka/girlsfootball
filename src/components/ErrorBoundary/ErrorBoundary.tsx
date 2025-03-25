@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ButtonHTMLAttributes } from 'react';
+import React, { Component, ErrorInfo } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -10,11 +10,11 @@ interface State {
   error: Error | null;
 }
 
-interface StyledProps {
-  children?: React.ReactNode;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
 }
 
-const ErrorContainer = styled.div<StyledProps>`
+const ErrorContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,14 +25,14 @@ const ErrorContainer = styled.div<StyledProps>`
   min-height: 12.5rem;
 `;
 
-const ErrorMessage = styled.div<StyledProps>`
+const ErrorMessage = styled.div`
   color: var(--text-primary);
   font-family: var(--font-pixel);
   font-size: 1rem;
   margin-bottom: var(--spacing-md);
 `;
 
-const RetryButton = styled.button.attrs({ type: 'button' })<ButtonHTMLAttributes<HTMLButtonElement>>`
+const RetryButton = styled.button<ButtonProps>`
   background: var(--primary);
   color: var(--text-primary);
   border: none;
@@ -88,7 +88,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <ErrorMessage>
             加载出错了 (；′⌒`)
           </ErrorMessage>
-          <RetryButton onClick={this.handleRetry}>
+          <RetryButton type="button" onClick={this.handleRetry}>
             重试
           </RetryButton>
         </ErrorContainer>
