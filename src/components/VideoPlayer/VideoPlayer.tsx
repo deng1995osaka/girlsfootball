@@ -245,7 +245,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
           <ControlButton 
             aria-label="Previous" 
             onClick={handlePrevious}
-          >|◀◀</ControlButton>
+          >◀◀</ControlButton>
           <PlayButton 
             aria-label="Play" 
             onClick={handlePlay}
@@ -253,7 +253,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
           <ControlButton 
             aria-label="Pause" 
             onClick={handlePause}
-          >||</ControlButton>
+          >❚❚</ControlButton>
           <ControlButton 
             aria-label="Stop" 
             onClick={handleStop}
@@ -261,7 +261,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
           <ControlButton 
             aria-label="Next"
             onClick={handleNext}
-          >▶▶|</ControlButton>
+          >▶▶</ControlButton>
           
           <Progress
             className="progress-bar"

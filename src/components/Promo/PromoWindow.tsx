@@ -103,7 +103,7 @@ const PromoWindow: React.FC = () => {
         <Content>
           <ul>
             <li>如果你也是其中一员，欢迎分享你的足球生活；</li>
-            <li>如果你在找她们，现在可以开始了。</li>
+            <li>如果你在找她们，现在可以和她们一起踢了。</li>
           </ul>
         </Content>
       </JoinBox>

@@ -306,14 +306,25 @@ export const ControlButton = styled.button<ButtonHTMLAttributes<HTMLButtonElemen
   cursor: pointer;
   font-family: var(--font-pixel);
   transition: all 0.2s ease;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  box-shadow: 
+    inset -1px -1px 0 0 rgba(0, 0, 0, 0.3),
+    inset 1px 1px 0 0 rgba(255, 255, 255, 0.7);
 
   &:hover:not(:disabled) {
     background: #d0d0d0;
-    color: black;
+    color: var(--text-primary);
   }
 
   &:active:not(:disabled) {
     transform: scale(0.95);
+    box-shadow: 
+      inset 1px 1px 0 0 rgba(0, 0, 0, 0.3),
+      inset -1px -1px 0 0 rgba(255, 255, 255, 0.7);
   }
 
   &:disabled {
@@ -325,6 +336,8 @@ export const ControlButton = styled.button<ButtonHTMLAttributes<HTMLButtonElemen
 
 export const PlayButton = styled(ControlButton)`
   padding: 0.125rem 0.5rem 0.375rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1;
 `;
 
 export const Progress = styled.div`
