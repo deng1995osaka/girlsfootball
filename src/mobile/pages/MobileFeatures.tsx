@@ -171,6 +171,7 @@ const FEATURES_DATA = [
 ];
 
 const MobileFeatures: React.FC = () => {
+  console.log('MobileFeatures 组件开始渲染');
   const { t } = useTranslation();
   const [visibleFeatures, setVisibleFeatures] = useState<boolean[]>([false, false, false]);
   const [showSecondText, setShowSecondText] = useState(false);
@@ -179,6 +180,7 @@ const MobileFeatures: React.FC = () => {
   const endLineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    console.log('MobileFeatures useEffect 执行');
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -232,6 +234,7 @@ const MobileFeatures: React.FC = () => {
     });
   };
 
+  console.log('MobileFeatures 组件即将 return');
   return (
     <Container>
       <TitleWrapper>

@@ -17,7 +17,7 @@ import MobileFeatures from '../pages/MobileFeatures';
 import MobilePromo from '../pages/MobilePromo';
 import MobileDownload from '../pages/MobileDownload';
 
-type TabKey = 'video' | 'promo' | 'features' | 'download';
+type TabKey = 'promo' | 'features' | 'video' | 'download';
 
 interface NavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isActive?: boolean;
@@ -211,10 +211,10 @@ const NavButton = styled.button.attrs({ type: 'button' })<NavButtonProps>`
 `;
 
 const WINDOW_LABELS = {
+  promo: { zh: { prefix: '', content: '我的故事' }, en: { prefix: '', content: 'ABOUT' } },
+  features: { zh: { prefix: '', content: '功能介绍' }, en: { prefix: '', content: 'FEATURES' } },
   video: { zh: { prefix: '', content: '开球!' }, en: { prefix: '', content: 'INTRO' } },
-  promo: { zh: { prefix: '女孩踢球', content: '的故事' }, en: { prefix: '', content: 'ABOUT' } },
-  features: { zh: { prefix: '', content: '踢球·交朋友·一起玩' }, en: { prefix: '', content: 'FEATURES' } },
-  download: { zh: { prefix: '', content: '我们球场见' }, en: { prefix: '', content: 'DOWNLOAD' } }
+  download: { zh: { prefix: '', content: '下载' }, en: { prefix: '', content: 'DOWNLOAD' } }
 };
 
 const MobileLayout: React.FC = () => {
@@ -273,8 +273,10 @@ const MobileLayout: React.FC = () => {
   };
 
   const renderContent = () => {
+    console.log('当前 activeTab:', activeTab);
     switch (activeTab) {
       case 'video':
+        console.log('渲染 LazyMobileVideo');
         return (
           <ErrorBoundary>
             <Suspense fallback={<Loading />}>
@@ -283,6 +285,7 @@ const MobileLayout: React.FC = () => {
           </ErrorBoundary>
         );
       case 'promo':
+        console.log('渲染 LazyMobilePromo');
         return (
           <ErrorBoundary>
             <Suspense fallback={<Loading />}>
@@ -291,6 +294,7 @@ const MobileLayout: React.FC = () => {
           </ErrorBoundary>
         );
       case 'features':
+        console.log('渲染 LazyMobileFeatures');
         return (
           <ErrorBoundary>
             <Suspense fallback={<Loading />}>
@@ -299,6 +303,7 @@ const MobileLayout: React.FC = () => {
           </ErrorBoundary>
         );
       case 'download':
+        console.log('渲染 LazyMobileDownload');
         return (
           <ErrorBoundary>
             <Suspense fallback={<Loading />}>
@@ -307,6 +312,7 @@ const MobileLayout: React.FC = () => {
           </ErrorBoundary>
         );
       default:
+        console.log('渲染 null');
         return null;
     }
   };
@@ -323,7 +329,7 @@ const MobileLayout: React.FC = () => {
               onTouchStart={(e) => e.stopPropagation()}
             >
               <LabelWrapper>
-                <DecorativeLabel>{label.en}</DecorativeLabel>
+                <DecorativeLabel>{label.en.content}</DecorativeLabel>
                 <ChineseLabel>
                   {label.zh.prefix && <TextLabel>{label.zh.prefix}</TextLabel>}
                   <TextLabel>{label.zh.content}</TextLabel>
