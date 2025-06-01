@@ -9,7 +9,6 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/webp'],
     dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
     minimumCacheTTL: 60,
     disableStaticImages: true, // 禁用静态图片优化
   },

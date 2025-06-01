@@ -210,6 +210,13 @@ const NavButton = styled.button.attrs({ type: 'button' })<NavButtonProps>`
   `}
 `;
 
+const WINDOW_LABELS = {
+  video: { zh: { prefix: '', content: '开球!' }, en: { prefix: '', content: 'INTRO' } },
+  promo: { zh: { prefix: '女孩踢球', content: '的故事' }, en: { prefix: '', content: 'ABOUT' } },
+  features: { zh: { prefix: '', content: '踢球·交朋友·一起玩' }, en: { prefix: '', content: 'FEATURES' } },
+  download: { zh: { prefix: '', content: '我们球场见' }, en: { prefix: '', content: 'DOWNLOAD' } }
+};
+
 const MobileLayout: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabKey>('promo');
 

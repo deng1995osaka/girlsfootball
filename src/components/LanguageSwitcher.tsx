@@ -29,7 +29,9 @@ export const LanguageSwitcher: React.FC = () => {
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'zh' ? 'en' : 'zh';
-    i18n.changeLanguage(newLang);
+    
+    i18n.changeLanguage(newLang as 'en' | 'zh');
+
   };
 
   return (
