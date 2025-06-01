@@ -48,6 +48,15 @@ const Typewriter: React.FC<TypewriterProps> = ({
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
+    const reset = setTimeout(() => {
+      setDisplayText('');
+      setCurrentIndex(0);
+      setIsComplete(false);
+    }, 0);
+    return () => clearTimeout(reset);
+  }, [text]);
+
+  useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
     if (currentIndex < text.length) {

@@ -15,7 +15,7 @@ class MyDocument extends Document {
             }}
           />
           <link 
-            href="/fonts/pixel-font.ttf" 
+            href="/fonts/fusion-pixel.ttf" 
             rel="preload" 
             as="font" 
             type="font/ttf" 

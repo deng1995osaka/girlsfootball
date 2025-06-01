@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 interface StyledComponentProps {
   children?: React.ReactNode;
@@ -94,6 +95,7 @@ const BallShadow = styled.div`
 const Message = styled.p<StyledComponentProps>`
   font-size: 1rem;
   color: var(--text-primary);
+  line-height: 1.1;
 
   @media (min-width: 768px) {
     font-size: 1.125rem;
@@ -130,18 +132,18 @@ const PlatformIcon = styled.div<PlatformIconProps>`
 `;
 
 const DownloadWindow: React.FC = () => {
+  const { t, i18n } = useTranslation();
+
   return (
     <Container>
-      <ComingSoonText>
-        COMING<br />SOON
-      </ComingSoonText>
+      <ComingSoonText>Coming Soon</ComingSoonText>
       
       <BallWrapper>
         <PixelBall />
         <BallShadow />
       </BallWrapper>
       
-      <Message>移动端应用即将上线</Message>
+      <Message>{t('ios_coming_soon')}</Message>
     </Container>
   );
 };

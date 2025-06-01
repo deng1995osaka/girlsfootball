@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 interface DockProps {
   onItemClick: (window: WindowKey) => void;
@@ -38,13 +39,6 @@ const TextLabel = styled.span`
   line-height: 1;
 `;
 
-const WINDOW_LABELS: Record<WindowKey, { en: string; zh: { prefix?: string; content: string; suffix?: string } }> = {
-  video: { en: 'INTRO', zh: { content: '开球!' } },
-  promo: { en: 'ABOUT', zh: { content: '女孩踢球', prefix: '的故事' } },
-  features: { en: 'FEATURES', zh: { content: '踢球·交朋友·一起玩' } },
-  download: { en: 'DOWNLOAD', zh: { content: '我们球场见' } }
-};
-
 const SPACING = {
   leftEdge: '0.5rem',
   between: '0.5rem',
@@ -81,6 +75,7 @@ const ChineseLabel = styled.span<ItemLabelProps>`
   text-align: center;
   display: inline-block;
   text-shadow: 0.0625rem 0.0625rem 0.0625rem rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 `;
 
 const BUTTON_HEIGHT = {
@@ -89,8 +84,26 @@ const BUTTON_HEIGHT = {
   starIcon: '1rem'
 };
 
+const NAV_ORDER: WindowKey[] = ['video', 'promo', 'features', 'download'];
+
+const EN_LABELS = {
+  video: 'INTRO',
+  promo: 'ABOUT',
+  features: 'FEATURES',
+  download: 'DOWNLOAD'
+};
+
+const DECORATIVE_LABELS = {
+  video:    { zh: "INTRO", en: "开球!" },
+  promo:    { zh: "ABOUT", en: "女孩踢球" },
+  features: { zh: "FEATURES", en: "踢球·交朋友·一起玩" },
+  download: { zh: "DOWNLOAD", en: "我们球场见" }
+};
+
 const Dock: React.FC<DockProps> = ({ onItemClick, activeWindow, openWindows }) => {
+  const { t, i18n } = useTranslation();
   const [activeWindowState, setActiveWindow] = React.useState<string>('video');
+  const isZh = i18n.language === 'zh';
 
   const handleItemClick = (windowId: string) => {
     setActiveWindow(windowId);
@@ -100,7 +113,7 @@ const Dock: React.FC<DockProps> = ({ onItemClick, activeWindow, openWindows }) =
   return (
     <DockContainer>
       <DockItems>
-        {Object.entries(WINDOW_LABELS).map(([key, label]) => (
+        {NAV_ORDER.map((key) => (
           <NavButton
             key={key}
             data-key={key as WindowKey}
@@ -108,12 +121,29 @@ const Dock: React.FC<DockProps> = ({ onItemClick, activeWindow, openWindows }) =
             isActive={activeWindowState === key}
           >
             <LabelWrapper>
-              <DecorativeLabel>{label.en}</DecorativeLabel>
+              <DecorativeLabel>{isZh ? DECORATIVE_LABELS[key].zh : DECORATIVE_LABELS[key].en}</DecorativeLabel>
               <ChineseLabel>
-                {key === 'promo' && <StarIcon />}
-                <TextLabel>{label.zh.content}</TextLabel>
-                {key === 'promo' && <StarIcon />}
-                {label.zh.prefix && <TextLabel>{label.zh.prefix}</TextLabel>}
+                {key === 'promo' && isZh ? (
+                  <>
+                    <StarIcon />
+                    <TextLabel>{t('dock.promo.prefix')}</TextLabel>
+                    <StarIcon />
+                    <TextLabel>{t('dock.promo.content')}</TextLabel>
+                  </>
+                ) : key === 'promo' ? (
+                  <>
+                    <TextLabel>{t('dock.promo.content')}</TextLabel>
+                    <br />
+                    <StarIcon />
+                    <TextLabel>{t('dock.promo.prefix')}</TextLabel>
+                    <StarIcon />
+                  </>
+                ) : (
+                  <>
+                    <TextLabel>{t(`dock.${key}.content`)}</TextLabel>
+                    {t(`dock.${key}.prefix`) && <TextLabel>{t(`dock.${key}.prefix`)}</TextLabel>}
+                  </>
+                )}
               </ChineseLabel>
             </LabelWrapper>
           </NavButton>
@@ -143,23 +173,7 @@ const NavButton = styled.button.attrs({ type: 'button' })<NavButtonProps>`
   cursor: pointer;
   width: 100%;
   flex: 1;
-  min-height: ${props => {
-    const key = props['data-key'];
-    const label = WINDOW_LABELS[key as WindowKey];
-    // 计算内容字符数
-    const contentLength = label.zh.content.length;
-    // 计算前缀字符数（如果有的话）
-    const prefixLength = label.zh.prefix ? label.zh.prefix.length : 0;
-    // 如果是 promo 按钮，加上两个星形图标的高度
-    const starsHeight = key === 'promo' ? 2 : 0;
-    
-    // 将字符串值转换为数字进行计算
-    const baseHeight = parseFloat(BUTTON_HEIGHT.base);
-    const perCharHeight = parseFloat(BUTTON_HEIGHT.perChar);
-    const starIconHeight = parseFloat(BUTTON_HEIGHT.starIcon);
-    
-    return `${baseHeight + (contentLength + prefixLength) * perCharHeight + starsHeight * starIconHeight}rem`;
-  }};
+  min-height: 5rem;
   box-shadow: 
     inset -0.0625rem -0.0625rem 0 0 #000,
     inset 0.0625rem 0.0625rem 0 0 #fff,

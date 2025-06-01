@@ -28,13 +28,6 @@ interface ItemLabelProps {
   className?: string;
 }
 
-const WINDOW_LABELS: Record<TabKey, { en: string; zh: { prefix?: string; content: string; suffix?: string } }> = {
-  promo: { en: 'ABOUT', zh: { content: '我的故事' } },
-  features: { en: 'FEATURES', zh: { content: '功能介绍' } },
-  video: { en: 'INTRO', zh: { content: '开球!' } },
-  download: { en: 'DOWNLOAD', zh: { content: '下载' } }
-};
-
 const StarIcon = styled.div`
   width: 0.75rem;
   height: 0.75rem;

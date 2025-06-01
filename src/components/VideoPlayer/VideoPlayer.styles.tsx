@@ -349,13 +349,34 @@ export const PlayButton = styled(ControlButton)`
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0.375rem 0 0.375rem 0.5rem;
+    border-width: 0.3rem 0 0.3rem 0.5rem;
     border-color: transparent transparent transparent var(--text-primary);
     display: block;
     position: relative;
     top: 0;
   }
 `;
+
+export const StopButton = styled(ControlButton)`
+  position: relative;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--text-primary);
+    border-radius: 0.125rem;
+    position: relative;
+  }
+` as any;
 
 export const Progress = styled.div`
   position: relative;

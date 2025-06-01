@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AdaptiveTitle from '../../components/UI/AdaptiveTitle';
 import Typewriter from '../../components/UI/Typewriter';
 import OptimizedImage from '../../components/UI/OptimizedImage';
+import { useTranslation } from 'react-i18next';
 
 const Container = styled.div`
   padding: var(--spacing-sm);
@@ -144,6 +145,7 @@ const Content = styled.div`
 `;
 
 const MobilePromo: React.FC = () => {
+  const { t } = useTranslation();
   const [showSecondText, setShowSecondText] = useState(false);
 
   const handleFirstTextComplete = () => {
@@ -153,12 +155,12 @@ const MobilePromo: React.FC = () => {
   return (
     <Container>
       <TitleWrapper>
-        <AdaptiveTitle text="★女孩踢球★的故事" />
+        <AdaptiveTitle text={t('story.title')} />
         
         <SubTitle>
           <div>
             <Typewriter 
-              text="别问能不能踢，"
+              text={t('story.subheadline.line1')}
               speed={80}
               delay={1500}
               onComplete={handleFirstTextComplete}
@@ -167,7 +169,7 @@ const MobilePromo: React.FC = () => {
           <div>
             {showSecondText && (
               <Typewriter 
-                text="先上场再说。"
+                text={t('story.subheadline.line2')}
                 speed={80}
                 delay={0}
               />
@@ -177,10 +179,7 @@ const MobilePromo: React.FC = () => {
       </TitleWrapper>
       
       <StoryBox>
-        <StoryText>2022年春天，我作为初学者加入了一支业余女足队。</StoryText>
-        <StoryText>女孩们教我传球、射门，我们一起踢球，也一起聚餐、爬山、看球赛。</StoryText>
-        <StoryText>甚至在一个周末，一起去公园放风筝。</StoryText>
-        <StoryText>后来，我发现像我们这样的队伍越来越多。</StoryText>
+        <StoryText>{t('story.content', { returnObjects: true })}</StoryText>
       </StoryBox>
 
       <Preview>
@@ -193,8 +192,8 @@ const MobilePromo: React.FC = () => {
       <JoinBox>
         <Content>
           <ul>
-            <li>如果你也是其中一员，欢迎分享你的足球生活；</li>
-            <li>如果你在找她们，现在可以和她们一起踢了。</li>
+            <li>{t('story.invitation.line1')}</li>
+            <li>{t('story.invitation.line2')}</li>
           </ul>
         </Content>
       </JoinBox>

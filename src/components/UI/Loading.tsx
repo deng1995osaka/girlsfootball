@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const bounce = keyframes`
   0%, 100% { transform: translateY(0); }
@@ -34,10 +35,11 @@ const LoadingText = styled.p`
 `;
 
 const Loading: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <LoadingContainer>
       <LoadingBall />
-      <LoadingText>加载中...</LoadingText>
+      <LoadingText>{t('loading')}</LoadingText>
     </LoadingContainer>
   );
 };

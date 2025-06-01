@@ -2,9 +2,9 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   @font-face {
-    font-family: 'PixelFont';
-    src: local('PixelFont'),
-         url('/fonts/pixel-font.ttf') format('truetype');
+    font-family: 'FusionPixel';
+    src: local('FusionPixel'),
+         url('/fonts/fusion-pixel.ttf') format('truetype');
     font-display: swap;
     font-weight: normal;
     font-style: normal;
@@ -21,10 +21,10 @@ export const GlobalStyles = createGlobalStyle`
 
   :root {
     /* 字体系统 */
-    --font-pixel: 'PixelFont', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-pixel: 'FusionPixel', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-edun: 'EDunDot', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-retro: 'Press Start 2P', monospace;
-    --font-mono: 'PixelFont', monospace, -apple-system, BlinkMacSystemFont;
+    --font-mono: 'FusionPixel', monospace, -apple-system, BlinkMacSystemFont;
     
     /* 基准字体大小 */
     --font-size-base: 16px;

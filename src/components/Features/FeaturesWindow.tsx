@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Container,
   Content,
@@ -12,6 +13,8 @@ import Typewriter from '../UI/Typewriter';
 import AdaptiveTitle from '../UI/AdaptiveTitle';
 import OptimizedImage from '../UI/OptimizedImage';
 
+import { LanguageSwitcher } from '../LanguageSwitcher';
+
 /**
  * FeaturesWindow 组件
  * 展示网站主要功能模块的窗口组件
@@ -20,6 +23,7 @@ import OptimizedImage from '../UI/OptimizedImage';
  * 响应式设计：在移动端垂直排列，桌面端采用两列布局
  */
 const FeaturesWindow: React.FC = () => {
+  const { t } = useTranslation();
   const [visibleFeatures, setVisibleFeatures] = useState<boolean[]>([false, false, false]);
   const [showSecondText, setShowSecondText] = useState(false);
   const [showEndLine, setShowEndLine] = useState(false);
@@ -83,13 +87,13 @@ const FeaturesWindow: React.FC = () => {
   return (
     <Container>
       <div>
-        <AdaptiveTitle text="踢球·交朋友·一起玩" />
+        <AdaptiveTitle text={t('main.title')} />
       </div>
       
       <DescriptionBox>
         <div>
           <Typewriter 
-            text="不管是5人制还是野球场，"
+            text={t('main.subtitle.line1')}
             speed={80}
             delay={1500}
             onComplete={handleFirstTextComplete}
@@ -98,7 +102,7 @@ const FeaturesWindow: React.FC = () => {
         <div>
           {showSecondText && (
             <Typewriter 
-              text="我们都想在绿茵场上奔跑、进球、呐喊。"
+              text={t('main.subtitle.line2')}
               speed={80}
               delay={0}
             />
@@ -117,10 +121,10 @@ const FeaturesWindow: React.FC = () => {
               reverse={index === 1}
             >
               <Content>
-                <h2>{feature.title}</h2>
-                <h3>{feature.subtitle}</h3>
+                <h2>{t(`features.${feature.id}.title`)}</h2>
+                <h3>{t(`features.${feature.id}.subtitle`)}</h3>
                 <ul>
-                  {feature.items.map((item, itemIndex) => (
+                  {(t(`features.${feature.id}.highlights`, { returnObjects: true }) as string[]).map((item, itemIndex) => (
                     <li key={itemIndex}>{item}</li>
                   ))}
                 </ul>
@@ -128,7 +132,7 @@ const FeaturesWindow: React.FC = () => {
               <Preview>
                 <OptimizedImage 
                   src={feature.preview} 
-                  alt={feature.title} 
+                  alt={t(`alt.${feature.id}`)} 
                   style={{ 
                     width: '100%', 
                     height: '100%', 
@@ -146,13 +150,15 @@ const FeaturesWindow: React.FC = () => {
         <EndLine>
           {showEndLine && (
             <Typewriter 
-              text="★女孩踢球★等你来开球！"
+              text={t('ending')}
               speed={50}
               delay={0}
             />
           )}
         </EndLine>
       </div>
+
+    
     </Container>
   );
 };
@@ -161,35 +167,17 @@ const FeaturesWindow: React.FC = () => {
 const FEATURES_DATA = [
   {
     id: 'team',
-    title: '[FEATURE_01: TEAM]',
     subtitle: 'TEAM STATUS >>>',
-    items: [
-      '按区域筛选，看看谁在附近踢球',
-      '创建你的球队主页',
-      '设计像素风队服',
-    ],
     preview: '/images/TEAM.webp',
   },
   {
     id: 'moments',
-    title: '[FEATURE_02: MOMENTS]',
     subtitle: 'MEMORY LOADING >>>',
-    items: [
-      '记录每次相聚',
-      '分享日常训练',
-      '发布你的球场故事'
-    ],
     preview: '/images/MOMENTS.webp',
   },
   {
     id: 'player',
-    title: '[FEATURE_03: PLAYER]',
     subtitle: 'PLAYER CARD >>>',
-    items: [
-      '定制专属PLAYER卡片',
-      '选择场上位置',
-      '查看你的小报和球队'
-    ],
     preview: '/images/PLAYER.webp',
   }
 ];

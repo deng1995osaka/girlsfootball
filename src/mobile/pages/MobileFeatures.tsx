@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Typewriter from '../../components/UI/Typewriter';
 import AdaptiveTitle from '../../components/UI/AdaptiveTitle';
+import { useTranslation } from 'react-i18next';
 
 const Container = styled.div`
   padding: var(--spacing-sm);
@@ -70,7 +71,6 @@ const Content = styled.div`
   h2 {
     font-size: 1rem;
     color: var(--primary);
-    font-weight: bold;
     margin-bottom: 0.625rem;
   }
 
@@ -171,6 +171,7 @@ const FEATURES_DATA = [
 ];
 
 const MobileFeatures: React.FC = () => {
+  const { t } = useTranslation();
   const [visibleFeatures, setVisibleFeatures] = useState<boolean[]>([false, false, false]);
   const [showSecondText, setShowSecondText] = useState(false);
   const [showEndLine, setShowEndLine] = useState(false);
@@ -234,12 +235,12 @@ const MobileFeatures: React.FC = () => {
   return (
     <Container>
       <TitleWrapper>
-        <AdaptiveTitle text="踢球·交朋友·一起玩" />
+        <AdaptiveTitle text={t('main.title')} />
         
         <SubTitle>
           <div>
             <Typewriter 
-              text="不管是5人制还是野球场，"
+              text={t('main.subtitle.line1')}
               speed={80}
               delay={1500}
               onComplete={handleFirstTextComplete}
@@ -248,7 +249,7 @@ const MobileFeatures: React.FC = () => {
           <div>
             {showSecondText && (
               <Typewriter 
-                text="我们都想在绿茵场上奔跑、进球、呐喊。"
+                text={t('main.subtitle.line2')}
                 speed={80}
                 delay={0}
               />
@@ -267,17 +268,17 @@ const MobileFeatures: React.FC = () => {
               style={{ animationDelay: `${index * 800}ms` }}
             >
               <Content>
-                <h2>{feature.title}</h2>
-                <h3>{feature.subtitle}</h3>
+                <h2>{t(`features.${feature.id}.title`)}</h2>
+                <h3>{t(`features.${feature.id}.subtitle`)}</h3>
                 <ul>
-                  {feature.items.map((item, itemIndex) => (
+                  {t(`features.${feature.id}.highlights`, { returnObjects: true }).map((item, itemIndex) => (
                     <li key={itemIndex}>{item}</li>
                   ))}
                 </ul>
               </Content>
               
               <Preview>
-                <img src={feature.preview} alt={feature.title} />
+                <img src={feature.preview} alt={t(`features.${feature.id}.title`)} />
               </Preview>
             </FeatureBoxWrapper>
           </div>
@@ -289,7 +290,7 @@ const MobileFeatures: React.FC = () => {
         <EndLine>
           {showEndLine && (
             <Typewriter 
-              text="★女孩踢球★等你来开球！"
+              text={t('endLine.text')}
               speed={50}
               delay={0}
             />

@@ -10,16 +10,19 @@ import {
   Controls,
   ControlButton,
   PlayButton,
+  StopButton,
   Progress,
   GlobalStyle
 } from './VideoPlayer.styles';
 import OptimizedImage from '../UI/OptimizedImage';
+import { useTranslation } from 'react-i18next';
 
 interface VideoPlayerProps {
   title: string;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
+  const { t } = useTranslation();
   const [displayTime, setDisplayTime] = useState('00:00');
   const [statusText, setStatusText] = useState(title);
   const [animationState, setAnimationState] = useState<'play' | 'pause' | 'stop' | 'forward' | 'backward'>('stop');
@@ -136,14 +139,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
   }, [animationState]);
 
   const handlePlay = () => {
-    setStatusText('正在播放 - ' + title);
+    setStatusText(t('video.playing') + ' - ' + title);
     setAnimationState('play');
     setIsPlaying(true);
     audioRef.current?.play();
   };
 
   const handlePause = () => {
-    setStatusText('已暂停 - ' + title);
+    setStatusText(t('video.paused') + ' - ' + title);
     setAnimationState('pause');
     setIsPlaying(false);
     audioRef.current?.pause();
@@ -151,7 +154,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
 
   const handleStop = () => {
     setDisplayTime('00:00');
-    setStatusText('已停止 - ' + title);
+    setStatusText(t('video.stopped') + ' - ' + title);
     setAnimationState('stop');
     setIsPlaying(false);
     if (audioRef.current) {
@@ -161,7 +164,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
   };
 
   const handlePrevious = () => {
-    setStatusText('快退中 - ' + title);
+    setStatusText(t('video.rewinding') + ' - ' + title);
     setAnimationState('backward');
     if (audioRef.current) {
       audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - 5);
@@ -169,7 +172,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
   };
 
   const handleNext = () => {
-    setStatusText('快进中 - ' + title);
+    setStatusText(t('video.fastforwarding') + ' - ' + title);
     setAnimationState('forward');
     if (audioRef.current) {
       audioRef.current.currentTime = Math.min(audioRef.current.duration, audioRef.current.currentTime + 5);
@@ -245,7 +248,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
           <ControlButton 
             aria-label="Previous" 
             onClick={handlePrevious}
-          >◀◀</ControlButton>
+          >
+            <svg width="100%" height="100%" viewBox="0 0 24 16">
+              <polygon points="24,0 14,8 24,16" fill="currentColor"/>
+              <polygon points="14,0 4,8 14,16" fill="currentColor"/>
+            </svg>
+          </ControlButton>
           <PlayButton 
             aria-label="Play" 
             onClick={handlePlay}
@@ -254,14 +262,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ title }) => {
             aria-label="Pause" 
             onClick={handlePause}
           >❚❚</ControlButton>
-          <ControlButton 
+          <StopButton 
             aria-label="Stop" 
             onClick={handleStop}
-          >■</ControlButton>
+          />
           <ControlButton 
             aria-label="Next"
             onClick={handleNext}
-          >▶▶</ControlButton>
+          >
+            <svg width="100%" height="100%" viewBox="0 0 24 16">
+              <polygon points="0,0 10,8 0,16" fill="currentColor"/>
+              <polygon points="10,0 20,8 10,16" fill="currentColor"/>
+            </svg>
+          </ControlButton>
           
           <Progress
             className="progress-bar"

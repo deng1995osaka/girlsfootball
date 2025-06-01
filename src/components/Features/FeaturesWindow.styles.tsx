@@ -46,11 +46,12 @@ export const FeatureBox = styled.div<{ children?: React.ReactNode; reverse?: boo
 
 // 功能内容区
 export const Content = styled.div<{ children?: React.ReactNode }>`
+  margin-top: 1.8rem;
   h2 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: var(--primary);
-    font-weight: bold;
     margin-bottom: 0.625rem;
+    font-weight: normal;
     font-family: var(--font-pixel);
   }
 

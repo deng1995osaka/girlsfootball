@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import Loading from '../components/UI/Loading';
+import { useTranslation } from 'react-i18next';
 
 // 动态导入组件
 const Desktop = dynamic(() => import('../components/Layout/Desktop'), {
@@ -32,6 +33,7 @@ const DEFAULT_OPEN_WINDOWS: Record<WindowKey, boolean> = {
 };
 
 const HomePage = () => {
+  const { t, i18n } = useTranslation();
   const [openWindows, setOpenWindows] = useState<Record<WindowKey, boolean>>(DEFAULT_OPEN_WINDOWS);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
 
@@ -76,7 +78,11 @@ const HomePage = () => {
 
   return (
     <Container>
-      <SiteTitle>★女孩踢球★</SiteTitle>
+      <SiteTitle>
+        {i18n.language === 'zh'
+          ? t('header.title')
+          : t('header.title_en')}
+      </SiteTitle>
       <Dock onItemClick={toggleWindow} openWindows={openWindows} />
       <Desktop 
         openWindows={openWindowsList}
