@@ -271,14 +271,14 @@ const MobileFeatures: React.FC = () => {
                 <h2>{t(`features.${feature.id}.title`)}</h2>
                 <h3>{t(`features.${feature.id}.subtitle`)}</h3>
                 <ul>
-                  {t(`features.${feature.id}.highlights`, { returnObjects: true }).map((item, itemIndex) => (
+                  {(t(`features.${feature.id}.highlights`, { returnObjects: true }) as string[]).map((item, itemIndex) => (
                     <li key={itemIndex}>{item}</li>
                   ))}
                 </ul>
               </Content>
               
               <Preview>
-                <img src={feature.preview} alt={t(`features.${feature.id}.title`)} />
+                <img src={feature.preview} alt={t(`features.${feature.id}.title`) as string} />
               </Preview>
             </FeatureBoxWrapper>
           </div>
