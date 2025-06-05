@@ -5,6 +5,11 @@ class MyDocument extends Document {
     return (
       <Html lang="zh">
         <Head>
+          {/* Favicon 配置 */}
+          <link rel="icon" type="image/webp" href="/icons/favicon.webp" />
+          <link rel="apple-touch-icon" href="/icons/favicon.webp" />
+          <meta name="theme-color" content="#E67E22" />
+          
           <link
             href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
             rel="stylesheet"

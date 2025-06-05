@@ -146,7 +146,7 @@ const BaseWindow: React.FC<WindowProps> = memo(({
       const windowWidth = el.offsetWidth;
       const windowHeight = el.offsetHeight;
       const maxX = window.innerWidth - windowWidth;
-      const maxY = window.innerHeight - windowHeight;
+      const maxY = Math.max(0, window.innerHeight - windowHeight);
       
       const boundedX = Math.min(Math.max(newX, MIN_LEFT * 16), maxX);
       const boundedY = Math.min(Math.max(newY, MIN_TOP * 16), maxY);

@@ -16,6 +16,7 @@ import MobileVideo from '../pages/MobileVideo';
 import MobileFeatures from '../pages/MobileFeatures';
 import MobilePromo from '../pages/MobilePromo';
 import MobileDownload from '../pages/MobileDownload';
+import { useTranslation } from 'react-i18next';
 
 type TabKey = 'promo' | 'features' | 'video' | 'download';
 
@@ -218,6 +219,8 @@ const WINDOW_LABELS = {
 };
 
 const MobileLayout: React.FC = () => {
+  const { i18n } = useTranslation();
+  const isZh = i18n.language === 'zh';
   const [activeTab, setActiveTab] = useState<TabKey>('promo');
 
   const tabs: TabKey[] = ['promo', 'features', 'video', 'download'];
@@ -329,10 +332,20 @@ const MobileLayout: React.FC = () => {
               onTouchStart={(e) => e.stopPropagation()}
             >
               <LabelWrapper>
-                <DecorativeLabel>{label.en.content}</DecorativeLabel>
+                <DecorativeLabel>
+                  {isZh ? label.en.content : label.zh.content}
+                </DecorativeLabel>
                 <ChineseLabel>
-                  {label.zh.prefix && <TextLabel>{label.zh.prefix}</TextLabel>}
-                  <TextLabel>{label.zh.content}</TextLabel>
+                  {isZh
+                    ? <>
+                        {label.zh.prefix && <TextLabel>{label.zh.prefix}</TextLabel>}
+                        <TextLabel>{label.zh.content}</TextLabel>
+                      </>
+                    : <>
+                        {label.en.prefix && <TextLabel>{label.en.prefix}</TextLabel>}
+                        <TextLabel>{label.en.content}</TextLabel>
+                      </>
+                  }
                 </ChineseLabel>
               </LabelWrapper>
             </NavButton>

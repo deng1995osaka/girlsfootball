@@ -98,6 +98,7 @@ const SiteTitle = styled.h1`
   right: 40px;
   font-size: 36px;
   font-family: var(--font-pixel);
+  font-weight: normal;
   color: var(--title-color);
   z-index: 1000;
 `;

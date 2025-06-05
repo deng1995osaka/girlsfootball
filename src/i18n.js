@@ -92,7 +92,16 @@ const resources = {
       dock: {
         video: { content: "INTRO", prefix: "", en: "开球!" },
         promo: { content: "THE STORY OF", prefix: "女孩踢球", en: "女孩踢球" },
-        features: { content: "FEATURES", prefix: "", en: "踢球·交朋友·一起玩" },
+        features: { 
+          line1: "·踢球·交朋友·",
+          line2: "·一起玩·",
+          en_line1: "·KICK·",
+          en_line2: "·MAKE FRIENDS·",
+          en_line3: "·HAVE FUN·",
+          content: "FEATURES",
+          prefix: "",
+          en: "踢球·交朋友·一起玩"
+        },
         download: { content: "DOWNLOAD", prefix: "", en: "我们球场见" }
       }
     }
@@ -187,7 +196,16 @@ const resources = {
       dock: {
         video: { content: "开球!", prefix: "", en: "INTRO" },
         promo: { content: "的故事", prefix: "女孩踢球", en: "ABOUT" },
-        features: { content: "踢球·交朋友·一起玩", prefix: "", en: "FEATURES" },
+        features: { 
+          line1: "·踢球·交朋友·",
+          line2: "·一起玩·",
+          en_line1: "·Kick ·",
+          en_line2: "·Make Friends ·",
+          en_line3: "·Have Fun ·",
+          content: "踢球·交朋友·一起玩",
+          prefix: "",
+          en: "FEATURES"
+        },
         download: { content: "我们球场见", prefix: "", en: "DOWNLOAD" }
       }
     }

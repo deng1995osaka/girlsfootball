@@ -9,6 +9,7 @@ interface StyledProps {
 export const Container = styled.div`
   padding: var(--spacing-md);
   height: 37.5rem;
+  max-height: calc(100vh - 2rem);
   display: flex;
   flex-direction: column;
   overflow-y: auto;

@@ -37,6 +37,7 @@ const TextLabel = styled.span`
   color: var(--text-primary);
   letter-spacing: 0.125rem;
   line-height: 1;
+  padding: 0.1rem;
 `;
 
 const SPACING = {
@@ -75,7 +76,20 @@ const ChineseLabel = styled.span<ItemLabelProps>`
   text-align: center;
   display: inline-block;
   text-shadow: 0.0625rem 0.0625rem 0.0625rem rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
+
+  .line-group {
+    display: inline;
+  }
+
+  @media (max-height: 700px) {
+    .line-group {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .line-group:last-child {
+      margin-bottom: 0;
+    }
+  }
 `;
 
 const BUTTON_HEIGHT = {
@@ -104,6 +118,7 @@ const Dock: React.FC<DockProps> = ({ onItemClick, activeWindow, openWindows }) =
   const { t, i18n } = useTranslation();
   const [activeWindowState, setActiveWindow] = React.useState<string>('video');
   const isZh = i18n.language === 'zh';
+  const isEn = i18n.language === 'en';
 
   const handleItemClick = (windowId: string) => {
     setActiveWindow(windowId);
@@ -125,11 +140,28 @@ const Dock: React.FC<DockProps> = ({ onItemClick, activeWindow, openWindows }) =
               <ChineseLabel>
                 {key === 'promo' && isZh ? (
                   <>
-                    <StarIcon />
-                    <TextLabel>{t('dock.promo.prefix')}</TextLabel>
-                    <StarIcon />
-                    <TextLabel>{t('dock.promo.content')}</TextLabel>
+                    <span className="line-group">
+                      <StarIcon />
+                      <TextLabel>{t('dock.promo.prefix')}</TextLabel>
+                      <StarIcon />
+                    </span>
+                    <span className="line-group">
+                      <TextLabel>{t('dock.promo.content')}</TextLabel>
+                    </span>
                   </>
+                ) : key === 'features' ? (
+                  isEn ? (
+                    <>
+                      <span className="line-group"><TextLabel>{t('dock.features.en_line1')}</TextLabel></span>
+                      <span className="line-group"><TextLabel>{t('dock.features.en_line2')}</TextLabel></span>
+                      <span className="line-group"><TextLabel>{t('dock.features.en_line3')}</TextLabel></span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="line-group"><TextLabel>{t('dock.features.line1')}</TextLabel></span>
+                      <span className="line-group"><TextLabel>{t('dock.features.line2')}</TextLabel></span>
+                    </>
+                  )
                 ) : key === 'promo' ? (
                   <>
                     <TextLabel>{t('dock.promo.content')}</TextLabel>
