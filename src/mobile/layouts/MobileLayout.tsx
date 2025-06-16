@@ -338,8 +338,8 @@ const MobileLayout: React.FC = () => {
                 <ChineseLabel>
                   {isZh
                     ? <>
-                        {label.zh.prefix && <TextLabel>{label.zh.prefix}</TextLabel>}
-                        <TextLabel>{label.zh.content}</TextLabel>
+                  {label.zh.prefix && <TextLabel>{label.zh.prefix}</TextLabel>}
+                  <TextLabel>{label.zh.content}</TextLabel>
                       </>
                     : <>
                         {label.en.prefix && <TextLabel>{label.en.prefix}</TextLabel>}

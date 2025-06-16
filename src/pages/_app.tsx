@@ -3,6 +3,7 @@ import { GlobalStyles } from '../styles/GlobalStyles'
 import Head from 'next/head'
 import '../i18n'  // 导入 i18n 配置
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import Footer from '../components/Layout/Footer';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </div>
       <GlobalStyles />
       <Component {...pageProps} />
+      <Footer />
     </>
   )
 }
