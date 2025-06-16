@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const FooterContainer = styled.footer`
@@ -27,6 +27,24 @@ const FooterLink = styled.a`
 `;
 
 const Footer: React.FC = () => {
+  const [show备案, setShow备案] = useState(false);
+
+  useEffect(() => {
+    // 在客户端环境检查域名
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      if (hostname === 'girlsfootball.fun') {
+        setShow备案(true);
+      } else {
+        setShow备案(false);
+      }
+    }
+  }, []);
+
+  if (!show备案) {
+    return null; // 如果不是指定域名，则不渲染任何内容
+  }
+
   return (
     <FooterContainer>
       <p>©2025 女孩踢球 girlsfootball.fun | 苏ICP备2025170912号-2</p>
